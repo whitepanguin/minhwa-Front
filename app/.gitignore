@@ -1,37 +1,88 @@
-# Learn more https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files
-
-# dependencies
+# ================================
+# Dependencies / Caches
+# ================================
 node_modules/
-
-# Expo
 .expo/
+.expo-shared/
+.metro-cache/
+*.expo
+
+# Builds (Expo Web & others)
 dist/
+build/
 web-build/
 expo-env.d.ts
 
-# Native
-.kotlin/
-*.orig.*
+# ================================
+# Package Managers
+# ================================
+# Yarn 사용 시 npm/pnpm lock은 무시
+package-lock.json
+pnpm-lock.yaml
+
+# Logs
+*.log
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+pnpm-debug.*
+
+# Yarn Berry (PnP)
+.pnp.*
+.yarn/*
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
+
+# ================================
+# Metro
+# ================================
+.metro-health-check*
+
+# ================================
+# Native (eject 시 생성물)
+# ※ bare RN으로 전환해 iOS/Android를 버전관리하고 싶으면
+#    아래 ios/, android/ 항목을 제거하세요.
+# ================================
+ios/
+android/
+# Android
+.gradle/
+**/build/
+local.properties
+*.apk
+*.aab
+# iOS / CocoaPods
+Pods/
+Podfile.lock
+*.ipa
+
+# 서명/키/민감정보
 *.jks
+*.keystore
 *.p8
 *.p12
 *.key
 *.mobileprovision
+*.orig.*
 
-# Metro
-.metro-health-check*
-
-# debug
-npm-debug.*
-yarn-debug.*
-yarn-error.*
-
-# macOS
+# ================================
+# OS / Editor
+# ================================
 .DS_Store
+Thumbs.db
 *.pem
+.vscode/
+.idea/
+*.iml
 
-# local env files
+# ================================
+# Env / TypeScript / Lint caches
+# ================================
+.env
+.env.*
 .env*.local
-
-# typescript
 *.tsbuildinfo
+.eslintcache
+.stylelintcache
