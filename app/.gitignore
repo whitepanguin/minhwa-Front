@@ -2,10 +2,7 @@
 # Dependencies / Caches
 # ================================
 node_modules/
-.expo/
-.expo-shared/
-.metro-cache/
-*.expo
+**/node_modules/
 
 # Builds (Expo Web & others)
 dist/
