@@ -1,0 +1,44 @@
+# ------------------------
+# Node / React Native (Expo)
+# ------------------------
+app/node_modules/
+app/.expo/
+app/.expo-shared/
+app/.turbo/
+app/dist/
+app/build/
+app/web-build/
+
+# Yarn
+app/yarn-error.log
+app/.pnp.*
+app/.pnp.cjs
+app/.pnp.loader.mjs
+app/.yarn/*
+!app/.yarn/releases
+!app/.yarn/plugins
+!app/.yarn/sdks
+!app/.yarn/versions
+
+# iOS / Android (eject 시 생성)
+app/ios/
+app/android/
+app/*.apk
+app/*.aab
+
+# React Native fast refresh
+*.expo
+.expo-shared
+
+# Metro bundler cache
+app/.metro-cache/
+
+# ------------------------
+# OS / Editor
+# ------------------------
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.swp
+*.swo
