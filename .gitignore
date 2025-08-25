@@ -1,13 +1,8 @@
 # ------------------------
 # Node / React Native (Expo)
 # ------------------------
-app/node_modules/
-app/.expo/
-app/.expo-shared/
-app/.turbo/
-app/dist/
-app/build/
-app/web-build/
+node_modules/
+**/node_modules/
 
 # Yarn
 app/yarn-error.log
