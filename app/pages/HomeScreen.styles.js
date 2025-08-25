@@ -13,6 +13,11 @@ const colors = {
   darkGray: "#666666",
   lightGray: "#E8E8E8",
   overlay: "rgba(26, 26, 26, 0.3)",
+  paperWhite: "#F0F0F0", // Added for new styles
+  inkBlack: "#333333", // Added for new styles
+  overlayLight: "rgba(255, 255, 255, 0.2)", // Added for new styles
+  traditionalBlack: "#222222", // Added for new styles
+  hanjiDark: "#999999", // Added for new styles
 };
 
 export const styles = StyleSheet.create({
@@ -24,178 +29,317 @@ export const styles = StyleSheet.create({
 
   // ===== HEADER STYLES =====
   header: {
-    width: width,
-    height: height,
+    width: "100vw",
+    height: "100vh",
     position: "relative",
-    marginTop: Platform.OS === "web" ? 0 : 0, // 웹에서는 상단 여백 제거
+    marginTop: Platform.OS === "web" ? 0 : 0,
   },
   headerBackground: {
     width: "100%",
     height: "100%",
     position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
   },
-  headerOverlay: {
-    flex: 1,
+  headerGradient: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
     backgroundColor: colors.overlay,
-    justifyContent: "flex-start",
-    paddingTop: 50,
-    paddingHorizontal: 20,
   },
   headerTop: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    paddingVertical: 20,
+    paddingTop: height * 0.06,
+    paddingHorizontal: width * 0.04,
+    paddingBottom: height * 0.025,
+    zIndex: 10,
+  },
+  headerLeft: {
+    flexDirection: "row",
+    alignItems: "center",
+    flex: 1,
+  },
+  headerRight: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: width * 0.025,
   },
   logo: {
-    fontSize: 28,
+    fontSize: Math.min(width * 0.035, 28),
     fontWeight: "bold",
-    color: colors.white,
-    textShadowColor: colors.black,
+    color: colors.paperWhite,
+    marginRight: width * 0.05,
+    fontFamily:
+      Platform.OS === "ios" ? "AppleSDGothicNeo-Bold" : "sans-serif-bold",
+    textShadowColor: colors.inkBlack,
     textShadowOffset: { width: 1, height: 1 },
-    textShadowRadius: 3,
+    textShadowRadius: 2,
   },
-  headerButtons: {
+  navMenu: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 15,
-  },
-  navButton: {
-    backgroundColor: "rgba(255, 255, 255, 0.2)",
-    paddingHorizontal: 15,
-    paddingVertical: 8,
-    borderRadius: 20,
-    borderWidth: 1,
-    borderColor: "rgba(255, 255, 255, 0.3)",
-  },
-  navButtonText: {
-    color: colors.white,
-    fontSize: 14,
-    fontWeight: "600",
-  },
-  userButton: {
-    backgroundColor: colors.primary,
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 15,
-  },
-  userButtonText: {
-    color: colors.white,
-    fontSize: 12,
-    fontWeight: "600",
-  },
-
-  // ===== NAV STYLES =====
-  nav: {
-    flexDirection: "row",
-    backgroundColor: colors.white,
-    paddingVertical: 15,
-    paddingHorizontal: 20,
-    borderBottomWidth: 1,
-    borderBottomColor: colors.lightGray,
-    shadowColor: colors.black,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
+    gap: width * 0.04,
   },
   navItem: {
-    flex: 1,
-    alignItems: "center",
-    paddingVertical: 8,
+    paddingVertical: height * 0.01,
   },
   navText: {
-    fontSize: 16,
+    color: colors.paperWhite,
+    fontSize: Math.min(width * 0.02, 16),
+    fontWeight: "500",
+    fontFamily:
+      Platform.OS === "ios" ? "AppleSDGothicNeo-Medium" : "sans-serif-medium",
+    textShadowColor: colors.inkBlack,
+    textShadowOffset: { width: 0.5, height: 0.5 },
+    textShadowRadius: 1,
+  },
+  languageButton: {
+    backgroundColor: colors.overlayLight,
+    paddingHorizontal: width * 0.015,
+    paddingVertical: height * 0.008,
+    borderRadius: 4,
+    borderWidth: 1,
+    borderColor: colors.paperWhite,
+  },
+  languageText: {
+    color: colors.paperWhite,
+    fontSize: Math.min(width * 0.015, 12),
     fontWeight: "600",
-    color: colors.black,
+    fontFamily:
+      Platform.OS === "ios" ? "AppleSDGothicNeo-Bold" : "sans-serif-bold",
+  },
+  userMenu: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: width * 0.02,
+  },
+  userButton: {
+    paddingHorizontal: width * 0.015,
+    paddingVertical: height * 0.008,
+  },
+  userButtonText: {
+    color: colors.paperWhite,
+    fontSize: Math.min(width * 0.018, 14),
+    fontWeight: "500",
+    fontFamily:
+      Platform.OS === "ios" ? "AppleSDGothicNeo-Medium" : "sans-serif-medium",
+    textShadowColor: colors.inkBlack,
+    textShadowOffset: { width: 0.5, height: 0.5 },
+    textShadowRadius: 1,
+  },
+  slideButton: {
+    position: "absolute",
+    bottom: height * 0.05,
+    right: width * 0.05,
+    width: Math.min(width * 0.06, 50),
+    height: Math.min(width * 0.06, 50),
+    backgroundColor: colors.overlayLight,
+    borderRadius: Math.min(width * 0.06, 50) / 2,
+    justifyContent: "center",
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: colors.paperWhite,
+  },
+  slideButtonText: {
+    color: colors.paperWhite,
+    fontSize: Math.min(width * 0.03, 24),
+    fontWeight: "bold",
+    fontFamily:
+      Platform.OS === "ios" ? "AppleSDGothicNeo-Bold" : "sans-serif-bold",
   },
 
   // ===== MAIN STYLES =====
   main: {
-    paddingVertical: 40,
-    paddingHorizontal: 20,
-    backgroundColor: colors.gray,
+    paddingVertical: height * 0.05,
+    paddingHorizontal: width * 0.025,
+    backgroundColor: colors.hanjiLight,
   },
   sectionTitle: {
-    fontSize: 24,
+    fontSize: Math.min(width * 0.032, 26),
     fontWeight: "bold",
-    color: colors.black,
+    color: colors.traditionalBlack,
     textAlign: "center",
-    marginBottom: 30,
+    marginBottom: height * 0.04,
+    fontFamily:
+      Platform.OS === "ios" ? "AppleSDGothicNeo-Bold" : "sans-serif-bold",
+    textShadowColor: colors.traditionalGray,
+    textShadowOffset: { width: 0.5, height: 0.5 },
+    textShadowRadius: 1,
   },
   mainGrid: {
     flexDirection: "row",
-    flexWrap: "wrap",
-    justifyContent: "space-between",
-    gap: 15,
+    justifyContent: "center",
+    alignItems: "center",
+    gap: width * 0.015,
   },
   mainItem: {
-    width: (width - 50) / 2,
-    backgroundColor: colors.white,
-    borderRadius: 15,
+    width: Math.min(width * 0.15, 120),
+    height: Math.min(width * 0.15, 120),
+    backgroundColor: colors.paperWhite,
+    borderRadius: 12,
     overflow: "hidden",
-    shadowColor: colors.black,
+    shadowColor: colors.inkBlack,
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.1,
     shadowRadius: 8,
     elevation: 5,
+    borderWidth: 1,
+    borderColor: colors.hanjiDark,
+    justifyContent: "center",
+    alignItems: "center",
+    position: "relative",
   },
   mainItemImage: {
     width: "100%",
-    height: 120,
+    height: "100%",
+  },
+  mainItemOverlay: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
+  mainItemTextContainer: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  mainItemOverlayText: {
+    fontSize: Math.min(width * 0.018, 14),
+    fontWeight: "600",
+    color: "#FFFFFF",
+    textAlign: "center",
+    fontFamily:
+      Platform.OS === "ios" ? "AppleSDGothicNeo-Bold" : "sans-serif-bold",
+    textShadowColor: colors.inkBlack,
+    textShadowOffset: { width: 1, height: 1 },
+    textShadowRadius: 2,
   },
   mainItemText: {
-    fontSize: 14,
+    fontSize: 12,
     fontWeight: "600",
-    color: colors.black,
+    color: colors.traditionalBlack,
     textAlign: "center",
-    paddingVertical: 12,
-    paddingHorizontal: 8,
+    fontFamily:
+      Platform.OS === "ios" ? "AppleSDGothicNeo-Medium" : "sans-serif-medium",
+  },
+  mainTextContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 10,
+    gap: 25,
   },
 
   // ===== GALLERIES STYLES =====
   galleries: {
-    paddingVertical: 40,
-    paddingHorizontal: 20,
-    backgroundColor: colors.white,
+    paddingVertical: "60px",
+    paddingHorizontal: "20px",
+    backgroundColor: colors.hanji,
+    width: "100vw",
+    height: "600px",
   },
   galleryContainer: {
-    height: 200,
+    height: "450px",
     overflow: "hidden",
+    marginTop: "30px",
+    width: "100vw",
   },
   gallerySlide: {
     flexDirection: "row",
+    height: "400px",
+  },
+  galleryCard: {
+    width: "calc(20vw - 24px)",
+    height: "400px",
+    marginRight: "24px",
+    borderRadius: 12,
+    overflow: "hidden",
+    shadowColor: colors.inkBlack,
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.15,
+    shadowRadius: 12,
+    elevation: 8,
+    borderWidth: 1,
+    borderColor: colors.hanjiDark,
+  },
+  galleryCardImage: {
+    width: "100%",
     height: "100%",
   },
-  galleryItem: {
-    width: width - 40,
-    marginRight: 20,
-    backgroundColor: colors.gray,
-    borderRadius: 15,
-    overflow: "hidden",
-    shadowColor: colors.black,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
+  galleryCardOverlay: {
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    right: 0,
+    backgroundColor: "rgba(44, 44, 44, 0.8)",
+    padding: "20px",
   },
-  galleryImage: {
-    width: "100%",
-    height: 120,
+  galleryCardContent: {
+    flex: 1,
   },
-  galleryInfo: {
-    padding: 15,
-  },
-  galleryTitle: {
-    fontSize: 16,
+  galleryCardTitle: {
+    fontSize: "18px",
     fontWeight: "bold",
-    color: colors.black,
-    marginBottom: 5,
+    color: colors.paperWhite,
+    marginBottom: "5px",
+    fontFamily:
+      Platform.OS === "ios" ? "AppleSDGothicNeo-Bold" : "sans-serif-bold",
   },
-  galleryDescription: {
-    fontSize: 14,
-    color: colors.darkGray,
-    lineHeight: 20,
+  galleryCardSubtitle: {
+    fontSize: "14px",
+    color: colors.hanjiLight,
+    marginBottom: "15px",
+    fontFamily:
+      Platform.OS === "ios" ? "AppleSDGothicNeo-Regular" : "sans-serif",
+  },
+  galleryCardInfo: {
+    gap: "5px",
+  },
+  galleryCardLocation: {
+    fontSize: "12px",
+    color: colors.paperWhite,
+    fontWeight: "500",
+    fontFamily:
+      Platform.OS === "ios" ? "AppleSDGothicNeo-Medium" : "sans-serif-medium",
+  },
+  galleryCardDate: {
+    fontSize: "11px",
+    color: colors.hanjiLight,
+    fontFamily:
+      Platform.OS === "ios" ? "AppleSDGothicNeo-Regular" : "sans-serif",
+  },
+  gallerySlideButton: {
+    position: "absolute",
+    bottom: "20px",
+    right: "20px",
+    width: "50px",
+    height: "50px",
+    backgroundColor: "rgba(0, 0, 0, 0.6)",
+    borderRadius: "25px",
+    justifyContent: "center",
+    alignItems: "center",
+    borderWidth: 1,
+    borderColor: colors.paperWhite,
+  },
+  gallerySlideButtonText: {
+    color: colors.paperWhite,
+    fontSize: "24px",
+    fontWeight: "bold",
+    fontFamily:
+      Platform.OS === "ios" ? "AppleSDGothicNeo-Bold" : "sans-serif-bold",
   },
 
   // ===== FOOTER STYLES =====

@@ -19,34 +19,74 @@ const { width, height } = Dimensions.get("window");
 const HomeScreen = ({ navigation }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [currentGalleryIndex, setCurrentGalleryIndex] = useState(0);
+  const [language, setLanguage] = useState("KOR"); // 언어 상태 추가
+  const [hoveredItem, setHoveredItem] = useState(null); // 호버 상태 관리
   const slideAnim = new Animated.Value(0);
   const gallerySlideAnim = new Animated.Value(0);
 
   // Header 배경 이미지 슬라이드
   const headerImages = [
-    require("../public/일월오봉도.webp"),
-    require("../public/호랑이와 까치.jpg"),
-    require("../public/청자.jpeg"),
+    // require("../public/일월오봉도.webp"),
+    require("../public/traditional-village-7818476.jpg"),
+    // require("../public/청자.jpeg"),
   ];
 
   // Galleries 전시회 정보
   const galleryData = [
     {
       id: 1,
-      title: "국립중앙박물관 민화전",
-      description: "한국의 전통 민화를 한자리에서 만나보세요",
+      title: "조선 민화 특별전",
+      subtitle: "전통 민화의 아름다움을 만나다",
+      description: "국립중앙박물관",
+      date: "2025.01.15 ~ 2025.03.30",
       image: require("../public/일월오봉도.webp"),
     },
     {
       id: 2,
-      title: "민화의 세계 특별전",
-      description: "조선시대 민화의 아름다움을 감상하세요",
+      title: "현대 민화 작가전",
+      subtitle: "전통과 현대의 조화",
+      description: "서울시립미술관",
+      date: "2025.02.01 ~ 2025.04.15",
       image: require("../public/호랑이와 까치.jpg"),
     },
     {
       id: 3,
-      title: "현대 민화 작가전",
-      description: "현대 작가들의 민화 작품을 만나보세요",
+      title: "민화 디지털 아트전",
+      subtitle: "AI로 재탄생한 민화",
+      description: "디지털아트센터",
+      date: "2025.02.10 ~ 2025.05.20",
+      image: require("../public/청자.jpeg"),
+    },
+    {
+      id: 4,
+      title: "민화 체험 워크샵",
+      subtitle: "직접 그리는 민화의 세계",
+      description: "민화교육관",
+      date: "2025.03.01 ~ 2025.06.30",
+      image: require("../public/songhakdo.jpg"),
+    },
+    {
+      id: 5,
+      title: "민화 사진 아트전",
+      subtitle: "카메라로 담은 민화의 정취",
+      description: "사진미술관",
+      date: "2025.03.15 ~ 2025.07.15",
+      image: require("../public/일월오봉도.webp"),
+    },
+    {
+      id: 6,
+      title: "움직이는 민화전",
+      subtitle: "생동감 넘치는 민화",
+      description: "영상미술관",
+      date: "2025.04.01 ~ 2025.08.30",
+      image: require("../public/호랑이와 까치.jpg"),
+    },
+    {
+      id: 7,
+      title: "공간 속 민화전",
+      subtitle: "현대 공간과 어우러진 민화",
+      description: "현대미술관",
+      date: "2025.04.15 ~ 2025.09.15",
       image: require("../public/청자.jpeg"),
     },
   ];
@@ -62,10 +102,25 @@ const HomeScreen = ({ navigation }) => {
   // Galleries 자동 슬라이드
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentGalleryIndex((prev) => (prev + 1) % galleryData.length);
-    }, 3000);
+      setCurrentGalleryIndex((prev) => {
+        const nextIndex = prev + 1;
+        if (nextIndex >= galleryData.length) {
+          return 0; // 첫 번째로 돌아가기
+        }
+        return nextIndex;
+      });
+    }, 4000);
     return () => clearInterval(interval);
-  }, []);
+  }, [galleryData.length]);
+
+  // 슬라이드 애니메이션 업데이트
+  useEffect(() => {
+    Animated.timing(gallerySlideAnim, {
+      toValue: currentGalleryIndex,
+      duration: 1000,
+      useNativeDriver: true,
+    }).start();
+  }, [currentGalleryIndex, gallerySlideAnim]);
 
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
@@ -76,28 +131,43 @@ const HomeScreen = ({ navigation }) => {
           style={styles.headerBackground}
           resizeMode="cover"
         />
-        <View style={styles.headerOverlay}>
-          <View style={styles.headerTop}>
-            <Text style={styles.logo}>민화사진관</Text>
-            <View style={styles.headerButtons}>
-              <TouchableOpacity
-                style={styles.navButton}
-                onPress={() => navigation.navigate("Gallery")}
-              >
-                <Text style={styles.navButtonText}>갤러리</Text>
+        {/* 배경 어둡게 처리 */}
+        <View style={styles.headerGradient} />
+
+        {/* 상단 헤더 */}
+        <View style={styles.headerTop}>
+          <View style={styles.headerLeft}>
+            <Text style={styles.logo}>민화 사진관</Text>
+            <View style={styles.navMenu}>
+              <TouchableOpacity style={styles.navItem}>
+                <Text style={styles.navText}>민화 갤러리</Text>
               </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.navButton}
-                onPress={() => navigation.navigate("MinwhaTrans")}
-              >
-                <Text style={styles.navButtonText}>변환소</Text>
+              <TouchableOpacity style={styles.navItem}>
+                <Text style={styles.navText}>전시 정보</Text>
               </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.userButton}
-                onPress={() => navigation.navigate("Login")}
-              >
-                <Text style={styles.userButtonText}>로그인</Text>
+              <TouchableOpacity style={styles.navItem}>
+                <Text style={styles.navText}>디지털 전시관</Text>
               </TouchableOpacity>
+              <TouchableOpacity style={styles.navItem}>
+                <Text style={styles.navText}>민화 작업실</Text>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.navItem}>
+                <Text style={styles.navText}>담소 마당</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+
+          <View style={styles.headerRight}>
+            {/* 언어 선택 버튼 */}
+            <TouchableOpacity
+              style={styles.languageButton}
+              onPress={() => setLanguage(language === "KOR" ? "ENG" : "KOR")}
+            >
+              <Text style={styles.languageText}>{language}</Text>
+            </TouchableOpacity>
+
+            {/* 사용자 메뉴 */}
+            <View style={styles.userMenu}>
               <TouchableOpacity
                 style={styles.userButton}
                 onPress={() => navigation.navigate("SignUp")}
@@ -106,84 +176,111 @@ const HomeScreen = ({ navigation }) => {
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.userButton}
-                onPress={() => navigation.navigate("MyAlbum")}
+                onPress={() => navigation.navigate("Login")}
               >
-                <Text style={styles.userButtonText}>마이페이지</Text>
+                <Text style={styles.userButtonText}>로그인</Text>
               </TouchableOpacity>
             </View>
           </View>
         </View>
-      </View>
 
-      {/* ===== NAV SECTION ===== */}
-      <View style={styles.nav}>
-        <TouchableOpacity style={styles.navItem}>
-          <Text style={styles.navText}>홈</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.navItem}>
-          <Text style={styles.navText}>민화</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.navItem}>
-          <Text style={styles.navText}>변환소</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.navItem}>
-          <Text style={styles.navText}>갤러리</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.navItem}>
-          <Text style={styles.navText}>전시회</Text>
+        {/* 이미지 슬라이드 버튼 */}
+        <TouchableOpacity
+          style={styles.slideButton}
+          onPress={() =>
+            setCurrentImageIndex((prev) => (prev + 1) % headerImages.length)
+          }
+        >
+          <Text style={styles.slideButtonText}>›</Text>
         </TouchableOpacity>
       </View>
 
       {/* ===== MAIN SECTION ===== */}
       <View style={styles.main}>
-        <Text style={styles.sectionTitle}>핵심 기능</Text>
+        <Text style={styles.sectionTitle}>민화 체험관</Text>
         <View style={styles.mainGrid}>
           <TouchableOpacity
             style={styles.mainItem}
             onPress={() => navigation.navigate("Gallery")}
+            onMouseEnter={() => setHoveredItem(0)}
+            onMouseLeave={() => setHoveredItem(null)}
           >
             <Image
               source={require("../public/일월오봉도.webp")}
               style={styles.mainItemImage}
               resizeMode="cover"
             />
-            <Text style={styles.mainItemText}>민화</Text>
+            {hoveredItem === 0 && (
+              <>
+                <View style={styles.mainItemOverlay} />
+                <View style={styles.mainItemTextContainer}>
+                  <Text style={styles.mainItemOverlayText}>전통 민화</Text>
+                </View>
+              </>
+            )}
           </TouchableOpacity>
 
           <TouchableOpacity
             style={styles.mainItem}
             onPress={() => navigation.navigate("MinwhaTrans")}
+            onMouseEnter={() => setHoveredItem(1)}
+            onMouseLeave={() => setHoveredItem(null)}
           >
             <Image
               source={require("../public/호랑이와 까치.jpg")}
               style={styles.mainItemImage}
               resizeMode="cover"
             />
-            <Text style={styles.mainItemText}>민화풍 사진 변환소</Text>
+            {hoveredItem === 1 && (
+              <>
+                <View style={styles.mainItemOverlay} />
+                <View style={styles.mainItemTextContainer}>
+                  <Text style={styles.mainItemOverlayText}>민화풍 변환</Text>
+                </View>
+              </>
+            )}
           </TouchableOpacity>
 
           <TouchableOpacity
             style={styles.mainItem}
             onPress={() => navigation.navigate("Gallery")}
+            onMouseEnter={() => setHoveredItem(2)}
+            onMouseLeave={() => setHoveredItem(null)}
           >
             <Image
               source={require("../public/청자.jpeg")}
               style={styles.mainItemImage}
               resizeMode="cover"
             />
-            <Text style={styles.mainItemText}>유저 갤러리</Text>
+            {hoveredItem === 2 && (
+              <>
+                <View style={styles.mainItemOverlay} />
+                <View style={styles.mainItemTextContainer}>
+                  <Text style={styles.mainItemOverlayText}>작품 갤러리</Text>
+                </View>
+              </>
+            )}
           </TouchableOpacity>
 
           <TouchableOpacity
             style={styles.mainItem}
             onPress={() => navigation.navigate("MyAlbum")}
+            onMouseEnter={() => setHoveredItem(3)}
+            onMouseLeave={() => setHoveredItem(null)}
           >
             <Image
               source={require("../public/songhakdo.jpg")}
               style={styles.mainItemImage}
               resizeMode="cover"
             />
-            <Text style={styles.mainItemText}>나의 앨범</Text>
+            {hoveredItem === 3 && (
+              <>
+                <View style={styles.mainItemOverlay} />
+                <View style={styles.mainItemTextContainer}>
+                  <Text style={styles.mainItemOverlayText}>나의 앨범</Text>
+                </View>
+              </>
+            )}
           </TouchableOpacity>
         </View>
       </View>
@@ -199,38 +296,60 @@ const HomeScreen = ({ navigation }) => {
                 transform: [
                   {
                     translateX: gallerySlideAnim.interpolate({
-                      inputRange: [0, 1],
-                      outputRange: [0, -width],
+                      inputRange: [0, galleryData.length],
+                      outputRange: [
+                        0,
+                        -(galleryData.length * (window.innerWidth * 0.2)),
+                      ],
                     }),
                   },
                 ],
               },
             ]}
           >
-            {galleryData.map((item, index) => (
-              <View key={item.id} style={styles.galleryItem}>
+            {/* 순환 구조를 위해 앞뒤로 데이터 추가 */}
+            {[...galleryData, ...galleryData].map((item, index) => (
+              <View key={`${item.id}-${index}`} style={styles.galleryCard}>
                 <Image
                   source={item.image}
-                  style={styles.galleryImage}
+                  style={styles.galleryCardImage}
                   resizeMode="cover"
                 />
-                <View style={styles.galleryInfo}>
-                  <Text style={styles.galleryTitle}>{item.title}</Text>
-                  <Text style={styles.galleryDescription}>
-                    {item.description}
-                  </Text>
+                <View style={styles.galleryCardOverlay}>
+                  <View style={styles.galleryCardContent}>
+                    <Text style={styles.galleryCardTitle}>{item.title}</Text>
+                    <Text style={styles.galleryCardSubtitle}>
+                      {item.subtitle}
+                    </Text>
+                    <View style={styles.galleryCardInfo}>
+                      <Text style={styles.galleryCardLocation}>
+                        {item.description}
+                      </Text>
+                      <Text style={styles.galleryCardDate}>{item.date}</Text>
+                    </View>
+                  </View>
                 </View>
               </View>
             ))}
           </Animated.View>
         </View>
+
+        {/* 갤러리 슬라이드 버튼 */}
+        <TouchableOpacity
+          style={styles.gallerySlideButton}
+          onPress={() =>
+            setCurrentGalleryIndex((prev) => (prev + 1) % galleryData.length)
+          }
+        >
+          <Text style={styles.gallerySlideButtonText}>›</Text>
+        </TouchableOpacity>
       </View>
 
       {/* ===== FOOTER SECTION ===== */}
       <View style={styles.footer}>
         <View style={styles.footerContent}>
           <View style={styles.footerSection}>
-            <Text style={styles.footerTitle}>민화사진관</Text>
+            <Text style={styles.footerTitle}>민화 사진관</Text>
             <Text style={styles.footerText}>
               한국의 전통 민화를 현대적으로 재해석하여
             </Text>
@@ -241,9 +360,9 @@ const HomeScreen = ({ navigation }) => {
 
           <View style={styles.footerSection}>
             <Text style={styles.footerTitle}>서비스</Text>
-            <Text style={styles.footerText}>민화 갤러리</Text>
-            <Text style={styles.footerText}>사진 변환</Text>
-            <Text style={styles.footerText}>개인 앨범</Text>
+            <Text style={styles.footerText}>전통 민화 갤러리</Text>
+            <Text style={styles.footerText}>민화풍 사진 변환</Text>
+            <Text style={styles.footerText}>개인 작품 앨범</Text>
             <Text style={styles.footerText}>전시회 정보</Text>
           </View>
 
@@ -257,7 +376,7 @@ const HomeScreen = ({ navigation }) => {
 
         <View style={styles.footerBottom}>
           <Text style={styles.footerCopyright}>
-            © 2025 민화사진관. All rights reserved.
+            © 2025 민화 사진관. All rights reserved.
           </Text>
         </View>
       </View>
